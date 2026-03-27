@@ -5,7 +5,7 @@
 ---
 
 ## What this project is about
-Credit card fraud is a real problem — globally, losses topped $33 billion in 2023. This project builds a full machine learning pipeline to automatically detect fraudulent transactions from a highly imbalanced dataset (only 0.17% of transactions are fraud). Because of that imbalance, I focused on F1-Score and PR-AUC rather than accuracy, which would be misleading here.
+Credit card fraud is a real problem — globally, losses topped $33 billion in 2023. This project builds a full machine learning pipeline to automatically detect fraudulent transactions from a highly imbalanced dataset where only 0.17% of transactions are actually fraud. Because of that extreme imbalance, I focused on F1-Score and PR-AUC throughout rather than accuracy, which would be completely misleading here.
 
 ## Dataset
 - **Source:** [Kaggle — Credit Card Fraud Detection](https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud)
@@ -23,12 +23,13 @@ Credit card fraud is a real problem — globally, losses topped $33 billion in 2
 8. **Final model** — best model saved via `joblib`
 
 ## Results
-Random Forest came out on top with the best F1-Score (0.83) and PR-AUC (0.80) on the held-out test set. Logistic Regression had a higher ROC-AUC but a much lower F1, which is the more meaningful metric here given the imbalance.
+Random Forest came out on top with the best F1-Score (0.83) and PR-AUC (0.80) on the held-out test set. Logistic Regression had a higher ROC-AUC but a much lower F1 — which makes sense, since ROC-AUC is less informative when one class is this rare.
 
 ## Files
 | File | Description |
 |------|-------------|
-| `credit_card_fraud_detection_v2.ipynb` | Main notebook |
+| `credit_card_fraud_detection.ipynb` | Main notebook |
+| `credit_card_fraud_detection.html` | HTML export for submission |
 | `best_fraud_detection_model.pkl` | Saved final model (generated on run) |
 
 ## How to Run
