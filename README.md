@@ -1,52 +1,35 @@
 # Credit Card Fraud Detection
-**M606 Machine Learning — Gisma University of Applied Sciences**  
-**Student:** Arun Singh Chauhan | **ID:** GH1052389 | **Professor:** Mohammad Mahdavi
+M606 Machine Learning — Gisma University of Applied Sciences  
+Arun Singh Chauhan | GH1052389 | Prof. Mohammad Mahdavi
 
 ---
 
-## What this project is about
-Credit card fraud is a real problem — globally, losses topped $33 billion in 2023. This project builds a full machine learning pipeline to automatically detect fraudulent transactions from a highly imbalanced dataset where only 0.17% of transactions are actually fraud. Because of that extreme imbalance, I focused on F1-Score and PR-AUC throughout rather than accuracy, which would be completely misleading here.
+This was my M606 project. I picked fraud detection because it's one of those problems that looks easy on paper but gets complicated fast — the dataset has 284,807 transactions and only 492 of them are actually fraud. That's 0.17%. So the first thing I had to figure out was what "good" even means for a model like this, because accuracy is basically useless here.
 
-## Dataset
-- **Source:** [Kaggle — Credit Card Fraud Detection](https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud)
-- 284,807 transactions over two days (September 2013, European cardholders)
-- Features V1–V28 are PCA-transformed to protect cardholder privacy; Time and Amount are the only raw features
+I ended up using F1-Score and PR-AUC as my main metrics throughout. A model predicting "genuine" every single time scores 99.83% accuracy and catches zero fraud — so that tells you everything about why I ignored accuracy.
 
-## Pipeline
-1. **EDA** — checked for missing values, duplicates, class imbalance, feature distributions and correlations
-2. **Preprocessing** — removed duplicates, scaled Time and Amount, stratified 80/20 train-test split
-3. **Class imbalance** — random oversampling on training set only + `class_weight='balanced'`
-4. **Model training** — Logistic Regression, Decision Tree, Random Forest
-5. **Hyperparameter tuning** — `RandomizedSearchCV` with Stratified K-Fold, scored on F1
-6. **Evaluation** — Confusion Matrix, ROC-AUC, PR-AUC, F1-Score for all three models
-7. **Feature importance** — Random Forest importances (V17, V14, V12 were the strongest)
-8. **Final model** — best model saved via `joblib`
+The data is from Kaggle (European cardholders, September 2013, two days of transactions). The features V1 to V28 have been anonymised via PCA so I couldn't do much domain-specific feature engineering, but there's still enough signal in there to work with.
 
-## Results
-Random Forest came out on top with the best F1-Score (0.83) and PR-AUC (0.80) on the held-out test set. Logistic Regression had a higher ROC-AUC but a much lower F1 — which makes sense, since ROC-AUC is less informative when one class is this rare.
+**What I did:**  
+Started with EDA to get a feel for the imbalance and which features looked like they'd be useful. Found 1,081 duplicate rows which I dropped. Scaled Time and Amount, did a stratified 80/20 split, then oversampled the fraud cases in the training set only — doing it before the split would've leaked data into the test set.
 
-## Files
-| File | Description |
-|------|-------------|
-| `credit_card_fraud_detection.ipynb` | Main notebook |
+Trained three models — Logistic Regression as a sanity check baseline, then Decision Tree and Random Forest. Tuned all three with RandomizedSearchCV, scoring on F1 not accuracy. Random Forest won with F1 of 0.83 and PR-AUC of 0.80. Interestingly Logistic Regression had a better ROC-AUC but much worse F1, which is exactly why I didn't use ROC-AUC as the main metric. V17, V14 and V12 were the most important features, which matched what I saw in the correlation plots during EDA.
+
+**Files:**
+
+| File | What it is |
+|------|------------|
+| `credit_card_fraud_detection.ipynb` | main notebook |
 | `credit_card_fraud_detection.html` | HTML export for submission |
-| `best_fraud_detection_model.pkl` | Saved final model (generated on run) |
+| `best_fraud_detection_model.pkl` | saved model, created when you run the notebook |
 
-## How to Run
-1. Clone the repo
+**To run it:**  
+Clone the repo, make sure you've got Kaggle API credentials set up, then just run all cells. The first cell downloads the dataset automatically.
+
 ```bash
 git clone https://github.com/Arun-Singh-Chauhan-09/m606-fraud-detection-pipeline.git
-cd m606-fraud-detection-pipeline
-```
-2. Set up Kaggle API credentials, then run the first cell — it will download and unzip the dataset automatically
-3. Run all cells top to bottom
-
-## Requirements
-```
-pandas, numpy, matplotlib, seaborn
-scikit-learn, joblib, kaggle
-Python 3.10+
 ```
 
-## Note
-No changes will be made to this repo after the submission deadline of **9 April 2026, 18:00 Berlin Time**, in line with assessment guidelines.
+Needs: pandas, numpy, matplotlib, seaborn, scikit-learn, joblib, kaggle — Python 3.10+
+
+*Repo frozen after 9 April 2026, 18:00 Berlin time.*
