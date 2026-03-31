@@ -31,4 +31,4 @@ git clone https://github.com/Arun-Singh-Chauhan-09/m606-fraud-detection-pipeline
 
 Needs: pandas, numpy, matplotlib, scikit-learn — Python 3.10+
 
-*Repo frozen after 9 April 2026, 18:00 Berlin time.*
+
